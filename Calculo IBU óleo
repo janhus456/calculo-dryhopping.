@@ -1,0 +1,50 @@
+def calcular_ibu(quantidade_lupulo_g, aa_percent, utilizacao, volume_litros):
+    """
+    Calcula o IBU com base na fórmula de Tinseth simplificada
+    """
+    return (quantidade_lupulo_g * (aa_percent / 100) * utilizacao * 1000) / volume_litros
+
+def calcular_quantidade_lupulo_para_ibu_alvo(ibu_alvo, aa_percent, utilizacao, volume_litros):
+    """
+    Retorna a quantidade de lúpulo (g) necessária para atingir o IBU desejado
+    """
+    return (ibu_alvo * volume_litros) / ((aa_percent / 100) * utilizacao * 1000)
+
+# === ENTRADAS DO USUÁRIO ===
+
+volume_litros = float(input("Volume da cerveja (litros): "))
+
+# Lúpulo de amargor atual
+aa_antigo = float(input("AA% do lúpulo de amargor atual: "))
+utilizacao_antigo = float(input("Utilização do lúpulo atual (ex: 0.25 para 25%): "))
+quantidade_antigo = float(input("Quantidade do lúpulo de amargor atual (g): "))
+
+# Novo(s) lúpulo(s)
+aa_novo_1 = float(input("AA% do novo lúpulo 1: "))
+utilizacao_novo_1 = float(input("Utilização do novo lúpulo 1: "))
+
+aa_novo_2 = float(input("AA% do novo lúpulo 2 (ou 0 se não usar): "))
+utilizacao_novo_2 = float(input("Utilização do novo lúpulo 2: "))
+
+aa_novo_3 = float(input("AA% do novo lúpulo 3 (ou 0 se não usar): "))
+utilizacao_novo_3 = float(input("Utilização do novo lúpulo 3: "))
+
+# === CÁLCULO DO IBU-ALVO (baseado no lúpulo antigo) ===
+
+ibu_alvo = calcular_ibu(quantidade_antigo, aa_antigo, utilizacao_antigo, volume_litros)
+
+# === CÁLCULO DAS QUANTIDADES DOS NOVOS LÚPULOS ===
+
+quantidade_novo_1 = calcular_quantidade_lupulo_para_ibu_alvo(ibu_alvo, aa_novo_1, utilizacao_novo_1, volume_litros) if aa_novo_1 > 0 else 0
+quantidade_novo_2 = calcular_quantidade_lupulo_para_ibu_alvo(ibu_alvo, aa_novo_2, utilizacao_novo_2, volume_litros) if aa_novo_2 > 0 else 0
+quantidade_novo_3 = calcular_quantidade_lupulo_para_ibu_alvo(ibu_alvo, aa_novo_3, utilizacao_novo_3, volume_litros) if aa_novo_3 > 0 else 0
+
+# === RESULTADO FINAL (APENAS AS QUANTIDADES) ===
+
+print("\n--- QUANTIDADES DE LÚPULO NOVO NECESSÁRIAS ---")
+if aa_novo_1 > 0:
+    print(f"Lúpulo novo 1: {quantidade_novo_1:.2f} g")
+if aa_novo_2 > 0:
+    print(f"Lúpulo novo 2: {quantidade_novo_2:.2f} g")
+if aa_novo_3 > 0:
+    print(f"Lúpulo novo 3: {quantidade_novo_3:.2f} g")
